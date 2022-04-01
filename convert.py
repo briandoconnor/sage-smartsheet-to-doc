@@ -44,10 +44,23 @@ def main():
     if args.debug:
         pprint(sheet.as_list())
 
-    print("<html><body>")
+    print('''
+<html><body>
+<style>
+  table, th, td {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 40px;
+    padding-right: 2px;
+    border: 1px solid;
+  }
+</style>
+<table>
+    ''')
 
     valid_section = False
     valid_project = True
+    previous_project = False
     for row in sheet.rows:
         pi = ""
         pi_obj = row.get_cell("PI (at Sage)").object_value
@@ -91,9 +104,13 @@ def main():
         # main action here
         if (valid_section and valid_project ) :
             if (level == "Project"):
-                print("<h2>Project: "+str(deliverable)+"</h2>")
+                # LEFT OFF WITH: need to figure out indent logic with tables below
+                if(previous_project) :
+                    print("</td></tr>")
+                print("<tr><td><h2>Project: "+str(deliverable)+"</h2>")
                 print("<p><b>PI:</b>"+str(pi_array)+"</p>")
                 print("<p><b>Description:</b><i>fill me in</i></p>")
+                previous_project = True
             if(level == "Sub-Aim"):
                 print("<h3> -> Sub-Aim: "+str(aim) + " " + str(deliverable)+"</h3>")
                 print("<p><b>Description:</b> "+str(deliverable)+"</p>")
@@ -110,7 +127,9 @@ def main():
                 print("<p><b>Description:</b> "+str(deliverable)+"</p>")
                 print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p>")
 
-    print("</body></html>")
+    if (previous_project) :
+        print("</td></tr>")
+    print("</table></body></html>")
 
 if __name__ == '__main__':
     main()
