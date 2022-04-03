@@ -55,13 +55,14 @@ def main():
     border: 1px solid;
   }
 </style>
-<table>
     ''')
 
     valid_section = False
     valid_project = True
     previous_project = False
+    previous_level = -1
     for row in sheet.rows:
+        # collect a bunch of information
         pi = ""
         pi_obj = row.get_cell("PI (at Sage)").object_value
         if (pi_obj != None) :
@@ -81,8 +82,19 @@ def main():
         #print(f"Deliverable: {deliverable} Aim: {aim} Level: {level}")
         #num_books = row.get_cell("Number of read books").value
         #print(f"{full_name} has read {num_books} books")
+
+        # save state
+        new_level = -1
+
+        # now check to see if it's a category we want
         if (level == "Category" and (deliverable == "Funded Grant-based Projects" or
         deliverable == "Closeout Grant-based Projects" or deliverable == "New Grant-based Projects" )):
+            new_level = 0
+            if (new_level > previous_level):
+                print("<table><tr><td>")
+            elif (new_level < previous_level):
+                print("</td></tr></table><table><tr><td>")
+            previous_level = new_level
             valid_section = True
             #print("TRUE")
             print("<h1>"+deliverable+"</h1>")
@@ -101,31 +113,84 @@ def main():
         for individual_pi in pi:
             #print("<h1>PI Individual: "+str(individual_pi['name'])+"</h1>")
             pi_array.append(individual_pi['name'])
+
         # main action here
+        # seeing if this is a valid project to report
         if (valid_section and valid_project ) :
+            new_level = 0
             if (level == "Project"):
-                # LEFT OFF WITH: need to figure out indent logic with tables below
-                if(previous_project) :
-                    print("</td></tr>")
-                print("<tr><td><h2>Project: "+str(deliverable)+"</h2>")
+                new_level = 1
+                if (new_level > previous_level):
+                    print("<table><tr><td>")
+                elif (new_level < previous_level):
+                    for (i=previous_level; i>new_level; i--) :
+                        print("</td></tr></table>")
+                    print("<tr><td><table>")
+                if (new_level == previous_level):
+                    print("<tr><td>")
+                previous_level = new_level
+                print("<h2>Project: "+str(deliverable)+"</h2>")
                 print("<p><b>PI:</b>"+str(pi_array)+"</p>")
                 print("<p><b>Description:</b><i>fill me in</i></p>")
+                if (new_level >= previous_level):
+                    print("</tr></td>")
                 previous_project = True
             if(level == "Sub-Aim"):
+                new_level = 2
+                if (new_level > previous_level):
+                    print("<table><tr><td>")
+                elif (new_level < previous_level):
+                    for (i=previous_level; i>new_level; i--) :
+                        print("</td></tr></table>")
+                    print("<tr><td><table>")
+                if (new_level == previous_level):
+                    print("<tr><td>")
                 print("<h3> -> Sub-Aim: "+str(aim) + " " + str(deliverable)+"</h3>")
                 print("<p><b>Description:</b> "+str(deliverable)+"</p>")
                 print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p>")
+                if (new_level == previous_level):
+                    print("</tr></td>")
             if(level == "Deliverable"):
-                print("<h4> --> Deliverable: "+str(aim) + " " +str(deliverable)+"</h4>")
+                new_level = 3
+                if (new_level > previous_level):
+                    print("<table><tr><td>")
+                elif (new_level < previous_level):
+                    for (i=previous_level; i>new_level; i--) :
+                        print("</td></tr></table>")
+                    print("<tr><td><table>")
+                if (new_level == previous_level):
+                    print("<tr><td>")
+                print("<tr><td><h4> --> Deliverable: "+str(aim) + " " +str(deliverable)+"</h4>")
                 print("<p><b>Description:</b> "+str(deliverable)+"</p>")
-                print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p>")
+                print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p></td></tr>")
+                if (new_level == previous_level):
+                    print("</tr></td>")
             if(level == "Epic"):
+                new_level = 4
+                if (new_level > previous_level):
+                    print("<table><tr><td>")
+                elif (new_level < previous_level):
+                    for (i=previous_level; i>new_level; i--) :
+                        print("</td></tr></table>")
+                    print("<tr><td><table>")
+                if (new_level == previous_level):
+                    print("<tr><td>")
+
                 if (del_obj.hyperlink) :
-                    print("<h5><a href='"+del_obj.hyperlink.url+"'> ---> Epic: "+str(aim_obj) + " " +str(deliverable)+"</a></h5>")
+                    print("<tr><td><h5><a href='"+del_obj.hyperlink.url+"'> ---> Epic: "+str(aim_obj) + " " +str(deliverable)+"</a></h5>")
                 else:
-                    print("<h5> ---> Epic: "+str(aim) + " " +str(deliverable)+"</h5>")
+                    print("<tr><td><h5> ---> Epic: "+str(aim) + " " +str(deliverable)+"</h5>")
                 print("<p><b>Description:</b> "+str(deliverable)+"</p>")
-                print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p>")
+                print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p></td></tr>")
+
+                if (new_level == previous_level):
+                    print("</tr></td>")
+
+            if (new_level > previous_level):
+                print("<table><tr><td>")
+            elif (new_level < previous_level):
+                print("</td></tr></table>")
+            previous_level = new_level
 
     if (previous_project) :
         print("</td></tr>")
