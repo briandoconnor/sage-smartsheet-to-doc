@@ -13,6 +13,7 @@ def main():
     parser.add_argument('--pi')
     parser.add_argument('--sheetname')
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--header')
     args = parser.parse_args()
     #if args.help:
         #parser.print_help()
@@ -75,6 +76,13 @@ def main():
 
     # print initial table
     print("<table>")
+
+    if (args.header):
+        text_file = open(args.header, "r")
+        #read whole file to a string
+        header = text_file.read()
+        text_file.close()
+        print(header)
 
     for row in sheet.rows:
         # collect a bunch of information
