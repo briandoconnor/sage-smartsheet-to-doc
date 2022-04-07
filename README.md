@@ -1,7 +1,8 @@
 # sage-smartsheet-to-doc
+
 a simple Python script to convert a Smartsheet to a doc
 
-### Environment
+## Environment
 
 ```
 conda create -n sage-smartsheet-to-doc-env python=3.6
@@ -12,7 +13,7 @@ conda install jupyter
 source deactivate
 ```
 
-### Dependencies
+## Dependencies
 
 Once you've activated the conda environment, install dependencies
 
@@ -20,7 +21,7 @@ Once you've activated the conda environment, install dependencies
 pip install -r requirements.txt
 ```
 
-### Running
+## Running
 
 You need to make sure you have your Smartsheet token saved as an env var called
 
@@ -41,6 +42,15 @@ This will produce an HTML version of the smartsheet filtered by projects that ar
 You can then load the test.html in your browser and copy and paste into
 a Google doc for sharing/editing by others.
 
-### TODO
+You can use '--debug' if you want to see a dump of the objects that come back
+from Smartsheet.
 
-* the HTML format is really basic and could be greatly improved with tables/colors
+## Viewing Report
+
+Once you generate an HTML document you can open it in Chrome/Safari and then
+select-all, copy, and paste into a fresh Google doc.
+
+The formatting may look bad, with tables broken across many pages.  A simple
+fix is to go into "File --> Page Setup" and choose "Pageless".  This will
+eliminate the problems associated with breaking nested tables across pages
+and make the output much easier to view/edit.
