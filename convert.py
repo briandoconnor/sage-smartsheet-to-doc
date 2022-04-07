@@ -14,8 +14,8 @@ def main():
     parser.add_argument('--sheetname')
     parser.add_argument('--debug', action='store_true')
     args = parser.parse_args()
-    if len(sys.argv) == 1:
-        parser.print_help()
+    #if args.help:
+        #parser.print_help()
 
     filter_by_pi = False
     if args.pi:
@@ -164,10 +164,13 @@ def main():
 
             # background color
             open_row = "<tr><td>"
+            confidence_emoji = "🟢"
             if (str(confidence) == "Red"):
                 open_row = "<tr class='red'><td>"
+                confidence_emoji = "🔴"
             elif (str(confidence) == "Yellow"):
                 open_row = "<tr class='yellow'><td>"
+                confidence_emoji = "🟡"
             flag_str = "⚐"
             if (str(flag) == "True"):
                 flag_str = "🚩"
@@ -180,7 +183,7 @@ def main():
                 print(open_row)
                 print("<h2>Project: "+str(deliverable)+"</h2>")
                 print("<p><b>PIs: </b>"+pi_comma_list+"</p>")
-                print("<p><b>Flagged for Concern:</b> "+flag_str+" <b>Confidence Level:</b> "+str(confidence)+"</p>")
+                print("<p><b>Flagged for Concern:</b> "+flag_str+" <b>Confidence Level:</b> "+confidence_emoji+"</p>")
                 print("<p><b>Overall Project Start:</b> "+str(start)+" <b>Finish:</b> "+str(finish)+"</p>")
                 print("<p><b>Description: </b><i>fill me in</i></p>")
                 print("</td></tr>")
@@ -188,7 +191,7 @@ def main():
             if(level == "Sub-Aim"):
                 print(open_row)
                 print("<h3>Sub-Aim: "+str(aim) + " " + str(deliverable)+"</h3>")
-                print("<p><b>Flagged for Concern:</b> "+flag_str+" <b>Confidence Level:</b> "+str(confidence)+"</p>")
+                print("<p><b>Flagged for Concern:</b> "+flag_str+" <b>Confidence Level:</b> "+confidence_emoji+"</p>")
                 print("<p><b>Start:</b> "+str(start)+" <b>Finish:</b> "+str(finish)+"</p>")
                 print("<p><b>Description:</b> "+str(deliverable)+"</p>")
                 print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p>")
@@ -196,7 +199,7 @@ def main():
             if(level == "Deliverable"):
                 print(open_row)
                 print("<h4>Deliverable: "+str(aim) + " " +str(deliverable)+"</h4>")
-                print("<p><b>Flagged for Concern:</b> "+flag_str+" <b>Confidence Level:</b> "+str(confidence)+"</p>")
+                print("<p><b>Flagged for Concern:</b> "+flag_str+" <b>Confidence Level:</b> "+confidence_emoji+"</p>")
                 print("<p><b>Start:</b> "+str(start)+" <b>Finish:</b> "+str(finish)+"</p>")
                 print("<p><b>Description:</b> "+str(deliverable)+"</p>")
                 print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p>")
@@ -207,7 +210,7 @@ def main():
                     print("<h5><a href='"+del_obj.hyperlink.url+"'>Epic: "+str(aim_obj) + " " +str(deliverable)+"</a></h5>")
                 else:
                     print("<h5>Epic: "+str(aim) + " " +str(deliverable)+"</h5>")
-                print("<p><b>Flagged for Concern:</b> "+flag_str+" <b>Confidence Level:</b> "+str(confidence)+"</p>")
+                print("<p><b>Flagged for Concern:</b> "+flag_str+" <b>Confidence Level:</b> "+confidence_emoji+"</p>")
                 print("<p><b>Start:</b> "+str(start)+" <b>Finish:</b> "+str(finish)+"</p>")
                 print("<p><b>Description:</b> "+str(deliverable)+"</p>")
                 print("<p><b>Definition of Complete:</b> "+str(def_comp)+"</p>")
