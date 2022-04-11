@@ -28,13 +28,13 @@ You need to make sure you have your Smartsheet token saved as an env var called
     SMARTSHEET_API_TOKEN
 
 You can then run the following (pass in the name of the smartsheet using --sheetname if you don't have
-access to my test one e.g. "--smartsheet '2022 IBC Roadmap'").
+access to my test one e.g. "--sheetname '2022 IBC Roadmap'").
 
 Recommend you make a copy of the smartsheet for testing with this script.  This
 script doesn't modify the smartsheet but just in case...
 
 ```
-python3 convert.py --pi 'James Eddy' > test.html
+python3 convert.py --sheetname '2022 IBC Roadmap' --pi 'James Eddy'  > James_Eddy.html
 ```
 
 This will produce an HTML version of the smartsheet filtered by projects that are owned by James
